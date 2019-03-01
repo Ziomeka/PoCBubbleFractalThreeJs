@@ -12,8 +12,6 @@
 </head>
 
 <body>
-    <button class='up'>up</button>
-    <button class='dwn'>dwn</button>
     <script src="js/three.min.js"></script>
     <script src="js/CSS2DRenderer.js"></script>
     <script src="js/data.js"></script>
@@ -148,19 +146,19 @@
             const render = () => {
                 renderer.render(scene, camera);
                 labelRenderer.render( scene, camera );
-                document.querySelector('.label').parentNode.style.position = 'fixed';
+                //document.querySelector('.label').parentNode.style.position = 'fixed';
             };
 
             const addActiveElement = (element) => {
                 let activeCircle = new THREE.Mesh(myShape, new THREE.MeshBasicMaterial({ color: element.color}));
                 activeCircle.name = element.id;
                 scene.add(activeCircle);
-                let activeCircleLabelDiv = document.createElement( 'div' );
-                activeCircleLabelDiv.className = 'label label--active';
-                activeCircleLabelDiv.textContent = element.text;
-                let activeCircleLabel = new THREE.CSS2DObject(activeCircleLabelDiv);
-				activeCircleLabel.position.set( 1, 0, 0 );
-                activeCircle.add(activeCircleLabel);
+                // let activeCircleLabelDiv = document.createElement( 'div' );
+                // activeCircleLabelDiv.className = 'label label--active';
+                // activeCircleLabelDiv.textContent = element.text;
+                // let activeCircleLabel = new THREE.CSS2DObject(activeCircleLabelDiv);
+				// activeCircleLabel.position.set( 1, 0, 0 );
+                // activeCircle.add(activeCircleLabel);
             }
 
             const childPosition = (index, radius, step, offset) => {
@@ -171,14 +169,34 @@
                 }
             }
 
+            function createLabel(text, x, y, z, size, color) {
+				var canvas = document.createElement("canvas");
+                var context = canvas.getContext("2d");
+                context.fillStyle = color;
+                context.fillRect(0, 0, canvas.width, canvas.height);
+				context.font = size + "pt Arial";
+				var margin = 10;
+				var textWidth = context.measureText(text).width;
+				context.textAlign = "center";
+				context.textBaseline = "middle";
+				context.fillStyle = "black";
+                context.fillText(text, canvas.width / 2, canvas.height / 2);
+				var texture = new THREE.Texture(canvas);
+                texture.needsUpdate = true;
+                var material = new THREE.MeshBasicMaterial({
+                    map : texture
+                });
+                return material;
+            }
+
             const addChildElement = (element, index) => {
-                let childCircle = new THREE.Mesh(myShape, new THREE.MeshBasicMaterial({ color: element.color}));
+                let childCircle = new THREE.Mesh(myShape, createLabel(element.text, 0, 0, 0, 20, element.color));
                 childCircle.name = element.id;
                 childCircle.scale.set(CHILD_BUBBLE_SIZE_RATIO, CHILD_BUBBLE_SIZE_RATIO, 1);
                 childCircle.position.x = childPosition(index, CHILD_BUBBLE_POSITION_RADIUS, CHILDREN_DISTANCE_IN_ANGLE, 80).x;
                 childCircle.position.y = childPosition(index, CHILD_BUBBLE_POSITION_RADIUS, CHILDREN_DISTANCE_IN_ANGLE, 80).y;
                 scene.add(childCircle);
-                addLabel(childCircle, element.text);
+                //addLabel(childCircle, element.text);
             }
 
             const addLabel = (element, text) => {
