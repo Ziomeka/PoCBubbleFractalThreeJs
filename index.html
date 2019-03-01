@@ -158,6 +158,8 @@
                         curentElement = 0;
                     }
                 }
+                update();
+                render();
             }, false );
 
             const render = () => {
@@ -225,14 +227,7 @@
 
             let startTime = null;
             setScene(data[0]);
-            const renderLoop = (timeStamp) => {
-                if (!startTime) startTime = timeStamp;
-                let passedTime = timeStamp - startTime;
-                update();
-                render();
-                window.requestAnimationFrame(renderLoop);
-            }
-            window.requestAnimationFrame(renderLoop);
+            render();
         });
     </script>
 </body>
