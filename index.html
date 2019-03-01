@@ -19,65 +19,66 @@
     <button class='dwn'>dwn</button>
     <script src="js/three.min.js"></script>
     <script src="js/CSS2DRenderer.js"></script>
+    <script src="js/data.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded',function(){
-            const data = [
-                {
-                    id: 0,
-                    color: 0x008080,
-                    text: 'Root element',
-                    children: [1, 2]
-                },
-                {
-                    id: 1,
-                    color: 0xff4000,
-                    text: 'Element 1',
-                    children: [3, 4, 5],
-                    parent: 0
-                },
-                {
-                    id: 2,
-                    color: 0xffbf00,
-                    text: 'Element 2',
-                    children: [6, 7],
-                    parent: 0
-                },
-                {
-                    id: 3,
-                    color: 0x00ffff,
-                    children: [],
-                    text: 'Element 1.1',
-                    parent: 1
-                },
-                {
-                    id: 4,
-                    color: 0xbfff00,
-                    text: 'Element 1.2',
-                    children: [],
-                    parent: 1
-                },
-                {
-                    id: 5,
-                    color: 0x80ff00,
-                    children: [],
-                    text: 'Element 1.3',
-                    parent: 1
-                },
-                {
-                    id: 6,
-                    color: 0x40ff00,
-                    children: [],
-                    text: 'Element 2.1',
-                    parent: 2
-                },
-                {
-                    id: 7,
-                    color: 0x8000ff,
-                    text: 'Element 2.2',
-                    children: [],
-                    parent: 2
-                },
-            ];
+            // const data = [
+            //     {
+            //         id: 0,
+            //         color: 0x008080,
+            //         text: 'Root element',
+            //         children: [1, 2]
+            //     },
+            //     {
+            //         id: 1,
+            //         color: 0xff4000,
+            //         text: 'Element 1',
+            //         children: [3, 4, 5],
+            //         parent: 0
+            //     },
+            //     {
+            //         id: 2,
+            //         color: 0xffbf00,
+            //         text: 'Element 2',
+            //         children: [6, 7],
+            //         parent: 0
+            //     },
+            //     {
+            //         id: 3,
+            //         color: 0x00ffff,
+            //         children: [],
+            //         text: 'Element 1.1',
+            //         parent: 1
+            //     },
+            //     {
+            //         id: 4,
+            //         color: 0xbfff00,
+            //         text: 'Element 1.2',
+            //         children: [],
+            //         parent: 1
+            //     },
+            //     {
+            //         id: 5,
+            //         color: 0x80ff00,
+            //         children: [],
+            //         text: 'Element 1.3',
+            //         parent: 1
+            //     },
+            //     {
+            //         id: 6,
+            //         color: 0x40ff00,
+            //         children: [],
+            //         text: 'Element 2.1',
+            //         parent: 2
+            //     },
+            //     {
+            //         id: 7,
+            //         color: 0x8000ff,
+            //         text: 'Element 2.2',
+            //         children: [],
+            //         parent: 2
+            //     },
+            //];
             let curentElement = 0;
             let changeMarker = false;
 
