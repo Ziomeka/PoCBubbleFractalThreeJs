@@ -7,10 +7,7 @@
     <title>three.js - Bubles</title>
     <style>
         html, body {width: 100%; height: 100%; margin: 0;}
-        button {position: absolute; right: 1rem; z-index: 10;}
-        .up {top: 1rem;}
-        .dwn {top: 3rem;}
-        canvas {z-index: 0;}
+        canvas {z-index: 0; width: 100vw; height: 100vh; position: fixed; top: 0; left: 0;}
     </style>
 </head>
 
@@ -93,24 +90,6 @@
             camera.position.x = CAMERA_RADIUS;
             camera.position.z = CAMERA_DISTANCE;
 
-            document.querySelector('.up').addEventListener('click', () => {
-                const step = 1 * Math.PI / 180;
-                currentCameraAngle = currentCameraAngle + step;
-                camera.position.x = CAMERA_RADIUS *  Math.cos(currentCameraAngle);
-                camera.position.y = CAMERA_RADIUS *  Math.sin(currentCameraAngle);
-                camera.rotation.z += step;
-                camera.updateProjectionMatrix();
-            })
-
-            document.querySelector('.dwn').addEventListener('click', () => {
-                const step = 1 * Math.PI / 180;
-                currentCameraAngle = currentCameraAngle - step;
-                camera.position.x = CAMERA_RADIUS *  Math.cos(currentCameraAngle);
-                camera.position.y = CAMERA_RADIUS *  Math.sin(currentCameraAngle);
-                camera.rotation.z -= step;
-                camera.updateProjectionMatrix();
-            })
-
             // renderer declaration and setup
             let renderer = new THREE.WebGLRenderer({antialias: true});
             renderer.setSize(window.innerWidth, window.innerHeight);
@@ -138,6 +117,9 @@
             const CHILD_BUBBLE_SIZE_RATIO = 0.05;
             const BUBBLE_TO_PARENT_DISTACE_RATIO = 1.1;
             const CHILD_BUBBLE_POSITION_RADIUS = BUBBLE_TO_PARENT_DISTACE_RATIO * BASIC_BUBBLE_RADIUS;
+            const CHILDREN_DISTANCE_IN_ANGLE = 10,
+            GAP_HEIGHT = 50,
+            PAGE_HEIGHT_PER_CHILD = 2 * 200 + GAP_HEIGHT;
 
             let myShape = new THREE.CircleGeometry(BASIC_BUBBLE_RADIUS, 100);
             let raycaster = new THREE.Raycaster();
@@ -166,7 +148,7 @@
             const render = () => {
                 renderer.render(scene, camera);
                 labelRenderer.render( scene, camera );
-
+                document.querySelector('.label').parentNode.style.position = 'fixed';
             };
 
             const addActiveElement = (element) => {
@@ -178,7 +160,7 @@
                 activeCircleLabelDiv.textContent = element.text;
                 let activeCircleLabel = new THREE.CSS2DObject(activeCircleLabelDiv);
 				activeCircleLabel.position.set( 1, 0, 0 );
-				activeCircle.add(activeCircleLabel);
+                activeCircle.add(activeCircleLabel);
             }
 
             const childPosition = (index, radius, step, offset) => {
@@ -193,8 +175,8 @@
                 let childCircle = new THREE.Mesh(myShape, new THREE.MeshBasicMaterial({ color: element.color}));
                 childCircle.name = element.id;
                 childCircle.scale.set(CHILD_BUBBLE_SIZE_RATIO, CHILD_BUBBLE_SIZE_RATIO, 1);
-                childCircle.position.x = childPosition(index, CHILD_BUBBLE_POSITION_RADIUS, 10, 80).x;
-                childCircle.position.y = childPosition(index, CHILD_BUBBLE_POSITION_RADIUS, 10, 80).y;
+                childCircle.position.x = childPosition(index, CHILD_BUBBLE_POSITION_RADIUS, CHILDREN_DISTANCE_IN_ANGLE, 80).x;
+                childCircle.position.y = childPosition(index, CHILD_BUBBLE_POSITION_RADIUS, CHILDREN_DISTANCE_IN_ANGLE, 80).y;
                 scene.add(childCircle);
                 addLabel(childCircle, element.text);
             }
@@ -209,6 +191,8 @@
             }
 
             const setScene = (element) => {
+                let pageWidth = `${PAGE_HEIGHT_PER_CHILD * element.children.length + 2 * GAP_HEIGHT}px`
+                document.querySelector('body').style.height = pageWidth;
                 scene.remove.apply(scene, scene.children);
                 document.querySelectorAll('.label').forEach((label) => label.parentNode.removeChild(label))
 
@@ -218,6 +202,16 @@
 
                 })
             };
+
+            let moveOnScroll = () => {
+                let scrollPosition = window.scrollY || document.documentElement.scrollTop;
+                currentCameraAngle = -scrollPosition / 2000;
+                camera.position.x = CAMERA_RADIUS *  Math.cos(currentCameraAngle);
+                camera.position.y = CAMERA_RADIUS *  Math.sin(currentCameraAngle);
+                camera.rotation.z = currentCameraAngle;
+                camera.updateProjectionMatrix();
+                render();
+            }
 
             const update = () => {
                 if (changeMarker) {
@@ -229,6 +223,7 @@
             let startTime = null;
             setScene(data[0]);
             render();
+            window.addEventListener('scroll', moveOnScroll);
         });
     </script>
 </body>
