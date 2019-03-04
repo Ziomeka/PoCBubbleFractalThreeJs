@@ -169,13 +169,14 @@
                 }
             }
 
-            function createLabel(text, x, y, z, size, color) {
+            function createLabel(text, size, color) {
 				var canvas = document.createElement("canvas");
                 var context = canvas.getContext("2d");
+                canvas.width = 1000;
+                canvas.height = 1000;
                 context.fillStyle = color;
                 context.fillRect(0, 0, canvas.width, canvas.height);
 				context.font = size + "pt Arial";
-				var margin = 10;
 				var textWidth = context.measureText(text).width;
 				context.textAlign = "center";
 				context.textBaseline = "middle";
@@ -190,7 +191,7 @@
             }
 
             const addChildElement = (element, index) => {
-                let childCircle = new THREE.Mesh(myShape, createLabel(element.text, 0, 0, 0, 20, element.color));
+                let childCircle = new THREE.Mesh(myShape, createLabel(element.text, 100, element.color));
                 childCircle.name = element.id;
                 childCircle.scale.set(CHILD_BUBBLE_SIZE_RATIO, CHILD_BUBBLE_SIZE_RATIO, 1);
                 childCircle.position.x = childPosition(index, CHILD_BUBBLE_POSITION_RADIUS, CHILDREN_DISTANCE_IN_ANGLE, 80).x;
