@@ -229,6 +229,9 @@
                 camera.position.y = CAMERA_RADIUS *  Math.sin(currentCameraAngle);
                 camera.rotation.z = currentCameraAngle;
                 camera.updateProjectionMatrix();
+                scene.children.forEach((child) => {
+                    child.rotation.z = currentCameraAngle;
+                });
                 render();
             }
 
