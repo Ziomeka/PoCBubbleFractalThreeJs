@@ -115,9 +115,9 @@
             const CHILD_BUBBLE_SIZE_RATIO = 0.05;
             const BUBBLE_TO_PARENT_DISTACE_RATIO = 1.1;
             const CHILD_BUBBLE_POSITION_RADIUS = BUBBLE_TO_PARENT_DISTACE_RATIO * BASIC_BUBBLE_RADIUS;
-            const CHILDREN_DISTANCE_IN_ANGLE = 10,
+            const CHILDREN_DISTANCE_IN_ANGLE = 7,
             GAP_HEIGHT = 50,
-            PAGE_HEIGHT_PER_CHILD = 2 * 200 + GAP_HEIGHT;
+            PAGE_HEIGHT_PER_CHILD = 2 * 100 + GAP_HEIGHT;
 
             let myShape = new THREE.CircleGeometry(BASIC_BUBBLE_RADIUS, 100);
             let raycaster = new THREE.Raycaster();
@@ -210,6 +210,7 @@
             }
 
             const setScene = (element) => {
+                window.scrollTo(0, 0);
                 let pageWidth = `${PAGE_HEIGHT_PER_CHILD * element.children.length + 2 * GAP_HEIGHT}px`
                 document.querySelector('body').style.height = pageWidth;
                 scene.remove.apply(scene, scene.children);
@@ -218,7 +219,6 @@
                 addActiveElement(element);
                 element.children.forEach((child, index) => {
                     addChildElement(data[child], index);
-
                 })
             };
 
